@@ -1,6 +1,6 @@
-import PRSM from '../index';
+import { PRSM } from '../index';
 
-type SchoolState = {
+export type SchoolState = {
     name: string;
     address: {
         city: string;
@@ -11,24 +11,6 @@ type SchoolState = {
     teachers: Array<{ name: string; salary: number; }>;
 };
 
-export default new PRSM<SchoolState>('school');
-const school: SchoolState = {
-    name: 'PRSM Highschool',
-    address: {
-        city: 'Los Angeles',
-        street: '7th boulevard',
-        zipcode: 12345,
-    },
-    students: [
-        {
-            name: 'Noam Lin',
-            score: 100,
-        }
-    ],
-    teachers: [
-        {
-            name: 'John Doe',
-            salary: 555,
-        }
-    ],
-};
+const schoolStore = new PRSM<SchoolState>('school');
+
+export default schoolStore;
