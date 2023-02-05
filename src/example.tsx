@@ -1,3 +1,4 @@
+import React from 'react';
 import schoolStore from './stores/school';
 import type { SchoolState } from './stores/school';
 

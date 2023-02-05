@@ -5,15 +5,20 @@ import type {
 import { useEffect, useReducer } from 'react';
 import { validateParsePathsFunction, quickUidGenerate, makePathGeneratorProxy } from './helpers';
 
-
 type initOptions = {
     trace: 'none' | 'normal' | 'verbose';
 };
 
+enum STATUS {
+    uninitialized,
+    active,
+    destroyed,
+}
+
 export class PRSM <TargetType extends {}>{
     name: string;
 
-    status: 'uninitialized' | 'active' | 'destroyed';
+    status: STATUS;
 
     private target: TargetType;
 
@@ -21,7 +26,7 @@ export class PRSM <TargetType extends {}>{
 
     constructor(name: string) {
         this.name = name;
-        this.status = 'uninitialized';
+        this.status = STATUS.uninitialized;
         // initialize as a fallback
         this.target = {} as TargetType;
         this.proxy = Proxserve.make<TargetType>(this.target, {name});
@@ -40,7 +45,7 @@ export class PRSM <TargetType extends {}>{
                     }
                 },
             )
-            this.status = 'active';
+            this.status = STATUS.active;
         }
     }
 
@@ -56,7 +61,7 @@ export class PRSM <TargetType extends {}>{
         }
 
         useEffect(() => {
-            if (!paths2observe || this.status === 'destroyed') {
+            if (!paths2observe || this.status === STATUS.destroyed) {
                 return;
             }
 
@@ -82,6 +87,6 @@ export class PRSM <TargetType extends {}>{
 
     destroy(): void {
         Proxserve.destroy(this.proxy);
-        this.status = 'destroyed';
+        this.status = STATUS.destroyed;
     }
 }
