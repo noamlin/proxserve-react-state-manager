@@ -1,7 +1,7 @@
 {
-	"name": "proxserve-react-state-manager",
-	"version": "2.1.3",
-	"description": "React state manager - React bindings for Proxserve",
+	"name": "proxserve-react",
+	"version": "1.0.0",
+	"description": "React bindings for Proxserve as a state manager",
 	"license": "Apache 2.0",
 	"source": "src/index.ts",
 	"main": "dist/index.js",
