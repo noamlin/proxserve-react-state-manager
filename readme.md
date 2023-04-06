@@ -13,17 +13,34 @@ npm install --save proxserve-react
 ## Usage
 
 ```tsx
-import React, { Component } from 'react'
+// my-store.ts
+import PRSM from 'proxserve-react';
+const myStore = new PRSM<StoreType>('store-name');
+// optional - initialize once
+myStore.init({ myText: 'example', myNumber: 5 });
+export { myStore };
+```
 
-import ProxserveReact from 'proxserve-react-state-manager'
+```tsx
+import React from 'react'
+import { myStore } from './my-store.ts'
 
-class App extends Component {
-  render() {
-    return <ProxserveReact />
-  }
+function MyComponent() {
+  // use my store and listen (re-render) on myNumber changes
+  const my = myStore.useGet((obj) => [obj.myNumber]);
+  return <p>{my.myText} {my.myNumber}</p>
+}
+
+export function App() {
+  // optional - initialize on component render
+  useEffect(() => {
+    myStore.init(...);
+  }, []);
+
+  return <div><MyComponent /></div>
 }
 ```
 
 ## License
 
-Proxserve-React is [APACHE-2.0 licensed](https://www.apache.org/licenses/LICENSE-2.0).
+proxserve-react is [APACHE-2.0 licensed](https://www.apache.org/licenses/LICENSE-2.0).
