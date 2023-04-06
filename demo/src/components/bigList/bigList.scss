@@ -1,0 +1,14 @@
+ul.big-list {
+    list-style: square;
+    width: 450px;
+
+    > li {
+        padding: 0;
+        margin-right: 40px;
+        float: left;
+
+        > button {
+            cursor: pointer;
+        }
+    }
+}
