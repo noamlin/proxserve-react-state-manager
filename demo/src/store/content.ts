@@ -1,4 +1,4 @@
-import { PRSM } from '../../../';
+import PRSM from '../../../';
 import { loremIpsum } from '../loremIpsum';
 
 type Content = {
@@ -43,4 +43,4 @@ contentStore.init({
     },
 }, {trace: 'none'});
 
-export {contentStore};
+export { contentStore };

@@ -7,7 +7,7 @@ declare enum STATUS {
     active = 1,
     destroyed = 2
 }
-export declare class PRSM<TargetType extends object> {
+export default class PRSM<TargetType extends object> {
     name: string;
     status: STATUS;
     private target;

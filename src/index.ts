@@ -1,7 +1,7 @@
 import { Proxserve } from 'proxserve';
 import type { ProxserveInstance } from 'proxserve';
 import { useEffect, useReducer } from 'react';
-import { validateParsePathsFunction, quickUidGenerate, makePathGeneratorProxy } from './helpers';
+import { validateParsePaths, quickUidGenerate, makePathGeneratorProxy } from './helpers';
 
 type initOptions = {
     trace: 'none' | 'normal' | 'verbose';
@@ -13,7 +13,7 @@ enum STATUS {
     destroyed,
 }
 
-export class PRSM <TargetType extends object>{
+export default class PRSM <TargetType extends object>{
     name: string;
 
     status: STATUS;
@@ -54,12 +54,12 @@ export class PRSM <TargetType extends object>{
         let paths2observe: string[] | undefined;
         if (typeof pathsFunction === 'function') {
             const pathGeneratorObject = makePathGeneratorProxy();
-            const output = pathsFunction(pathGeneratorObject as TargetType);
-            paths2observe = validateParsePathsFunction(output);
+            const outputs = pathsFunction(pathGeneratorObject as TargetType);
+            paths2observe = validateParsePaths(outputs);
         }
 
         useEffect(() => {
-            if (!paths2observe || this.status === STATUS.destroyed) {
+            if (!paths2observe || paths2observe.length === 0 || this.status === STATUS.destroyed) {
                 return;
             }
 

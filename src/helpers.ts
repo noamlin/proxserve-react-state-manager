@@ -2,7 +2,7 @@ type PathGeneratorProxy = {
     __$propertyPath: string;
 };
 
-function validateIsPathGeneratorObject(object: unknown) {
+function validateIsPathGeneratorObject(object: any): object is PathGeneratorProxy {
     return (
         typeof object === 'object' &&
         object !== null &&
@@ -10,16 +10,17 @@ function validateIsPathGeneratorObject(object: unknown) {
     );
 }
 
-export function validateParsePathsFunction(pathsFunctionOutput: unknown): string[] | undefined {
-    if (validateIsPathGeneratorObject(pathsFunctionOutput)) {
-        // got a single path-object so put it in an array
-        return [(pathsFunctionOutput as PathGeneratorProxy).__$propertyPath];
-    } else if (Array.isArray(pathsFunctionOutput)) {
-        // got an array so return it after filtering out invalid items
-        return pathsFunctionOutput.filter((value: unknown) => validateIsPathGeneratorObject(value));
-    }
-    // got invalid output
-    return undefined;
+export function validateParsePaths(pathsFunctionOutput: any): string[] {
+    const outputs = Array.isArray(pathsFunctionOutput) ? pathsFunctionOutput : [pathsFunctionOutput];
+    const parsed: string[] = [];
+    
+    outputs.forEach((output) => {
+        if (validateIsPathGeneratorObject(output)) {
+            parsed.push(output.__$propertyPath);
+        }
+    });
+
+    return parsed;
 }
 
 export function quickUidGenerate(): string {

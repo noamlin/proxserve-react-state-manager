@@ -2,6 +2,7 @@ import React, { ChangeEventHandler, useCallback } from 'react';
 import { contentStore } from '../store/content';
 
 import { GreenText } from '../components/greenText/greenText';
+import { PartialList } from '../components/bigList/partialList';
 
 export const BottomSection = () => {
 	console.log('rendering "BottomSection"');
@@ -17,6 +18,8 @@ export const BottomSection = () => {
 			<GreenText />
 			<br/><br/>
 			<input value={content.topSection.inputText} onChange={onChange} />
+			<br/><br/>
+			<PartialList />
 		</div>
 	);
 };
