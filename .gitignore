@@ -64,6 +64,11 @@ typings/
 # next.js build output
 .next
 
+# lock files
+package-lock.json
+pnpm-lock.yaml
+
 .idea/
 temp/
 .vscode/
+demo/dist

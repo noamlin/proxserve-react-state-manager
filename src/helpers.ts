@@ -23,8 +23,10 @@ export function validateParsePathsFunction(pathsFunctionOutput: unknown): string
 }
 
 export function quickUidGenerate(): string {
+    if (crypto?.randomUUID) {
+        return crypto.randomUUID();
+    }
     return Math.random().toString().slice(2, 10)
-    + Math.random().toString().slice(2, 10)
     + Math.random().toString().slice(2, 10);
 }
 

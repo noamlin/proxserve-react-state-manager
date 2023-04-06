@@ -1,7 +1,5 @@
 import { Proxserve } from 'proxserve';
-import type {
-	ProxserveInstance,
-} from 'proxserve';
+import type { ProxserveInstance } from 'proxserve';
 import { useEffect, useReducer } from 'react';
 import { validateParsePathsFunction, quickUidGenerate, makePathGeneratorProxy } from './helpers';
 
@@ -15,7 +13,7 @@ enum STATUS {
     destroyed,
 }
 
-export class PRSM <TargetType extends {}>{
+export class PRSM <TargetType extends object>{
     name: string;
 
     status: STATUS;
@@ -37,7 +35,7 @@ export class PRSM <TargetType extends {}>{
             this.destroy();
             this.target = obj;
             this.proxy = Proxserve.make<TargetType>(
-                this.target as {},
+                this.target as object,
                 {
                     name: this.name,
                     debug: {
@@ -49,14 +47,14 @@ export class PRSM <TargetType extends {}>{
         }
     }
 
-    useGet(pathsFunction?: (obj: any) => any | any[]): ProxserveInstance & TargetType {
+    useGet(pathsFunction?: (obj: TargetType) => any | any[]): ProxserveInstance & TargetType {
         // https://reactjs.org/docs/hooks-faq.html#is-there-something-like-forceupdate
         const [, forceUpdate] = useReducer(x => x + 1, 0);
 
         let paths2observe: string[] | undefined;
         if (typeof pathsFunction === 'function') {
             const pathGeneratorObject = makePathGeneratorProxy();
-            const output = pathsFunction(pathGeneratorObject);
+            const output = pathsFunction(pathGeneratorObject as TargetType);
             paths2observe = validateParsePathsFunction(output);
         }
 
