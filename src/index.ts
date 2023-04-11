@@ -47,7 +47,14 @@ export default class PRSM <TargetType extends object>{
         }
     }
 
-    useGet(pathsFunction?: (obj: TargetType) => any | any[]): ProxserveInstance & TargetType {
+    get(): ProxserveInstance & TargetType {
+        return this.proxy;
+    }
+
+    useGet(
+        pathsFunction?: (obj: TargetType) => any | any[],
+        options: { deep: boolean } = { deep: false },
+    ): ProxserveInstance & TargetType {
         // https://reactjs.org/docs/hooks-faq.html#is-there-something-like-forceupdate
         const [, forceUpdate] = useReducer(x => x + 1, 0);
 
@@ -72,6 +79,7 @@ export default class PRSM <TargetType extends object>{
                     path,
                     id: randomId,
                     listener: forceUpdate,
+                    deep: options.deep,
                 });
             });
 

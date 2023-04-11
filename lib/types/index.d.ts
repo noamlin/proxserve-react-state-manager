@@ -14,7 +14,10 @@ export default class PRSM<TargetType extends object> {
     private proxy;
     constructor(name: string);
     init(obj: TargetType, options?: initOptions): void;
-    useGet(pathsFunction?: (obj: TargetType) => any | any[]): ProxserveInstance & TargetType;
+    get(): ProxserveInstance & TargetType;
+    useGet(pathsFunction?: (obj: TargetType) => any | any[], options?: {
+        deep: boolean;
+    }): ProxserveInstance & TargetType;
     destroy(): void;
 }
 export {};

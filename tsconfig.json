@@ -3,7 +3,7 @@
 	"include": ["src/**/*"],
 	"compilerOptions": {
 		"declaration": true,
-		"declarationDir": "dts",
+		"declarationDir": "types",
 		"jsx": "react",
 		"target": "ES2018",
 		"noImplicitAny": false,
