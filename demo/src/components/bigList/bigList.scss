@@ -1,13 +1,19 @@
 ul.big-list {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    row-gap: 5px;
     list-style: square;
-    width: 450px;
+    width: 630px;
+    padding: 0;
 
     > li {
         padding: 0;
-        margin-right: 40px;
-        float: left;
+        margin-left: 40px;
 
         > button {
+            width: 38px;
             cursor: pointer;
         }
     }

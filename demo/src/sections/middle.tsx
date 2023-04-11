@@ -14,7 +14,7 @@ export const MiddleSection = () => {
 			<h1>{content.middleSection.title}</h1>
 			<BlueText />
 			<br/><br/>
-			<InputText />
+			<InputText parentName="MiddleSection" />
 			<br/><br/>
 			<Card />
 			<br/><br/>

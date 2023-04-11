@@ -9,9 +9,12 @@ export function PartialList() {
         obj.topSection.bigList[5],
     ]);
 
-	return <ul className="big-list">
-        {[1,2,3,4,5].map((num) => {
-            return <li><button>{num}{content.topSection.bigList[num]}</button></li>
-        })}
-    </ul>;
+	return <>
+        <p>listening (re-rendering) only for numbers 1,3,5 clicks on top section:</p>
+        <ul className="big-list">
+            {[1,2,3,4,5].map((num) => {
+                return <li><button>{num}{content.topSection.bigList[num]}</button></li>
+            })}
+        </ul>
+    </>;
 };

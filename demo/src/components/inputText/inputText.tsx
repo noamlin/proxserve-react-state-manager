@@ -3,8 +3,8 @@ import { contentStore } from '../../store/content';
 import './inputText.scss';
 
 // input as another component so it will only trigger its own re-render
-export const InputText = () => {
-	console.log('rendering "MiddleSection -> InputText"');
+export const InputText = ({ parentName }: { parentName: string }) => {
+	console.log(`rendering "${parentName} -> InputText"`);
 	const content = contentStore.useGet((obj) => obj.topSection.inputText);
 
 	const onChange: ChangeEventHandler<HTMLInputElement> = useCallback((event) => {
