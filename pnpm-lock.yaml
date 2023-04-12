@@ -2,8 +2,8 @@ lockfileVersion: '6.0'
 
 dependencies:
   proxserve:
-    specifier: 2.2.0-beta.1
-    version: 2.2.0-beta.1
+    specifier: ^2.2.0
+    version: 2.2.0
 
 devDependencies:
   '@rollup/plugin-typescript':
@@ -1316,8 +1316,8 @@ packages:
       react-is: 16.13.1
     dev: true
 
-  /proxserve@2.2.0-beta.1:
-    resolution: {integrity: sha512-LKCr0XPRP75OxmgZbZDD5xP8OVIUVpC7qxCv8vDPEooa4+CYuE77n4d1qlA0LXJjwBRaidipNX4vKyCSgSLWbQ==}
+  /proxserve@2.2.0:
+    resolution: {integrity: sha512-Cp9uLPRiIT2xEkqKO82Ac64FVbY+vfNrTnNk+BiodkEGEoQuk+T7KUi+uW29fiyjP3vbiF0rK+XpIC83TvPP/g==}
     engines: {node: '>=13.0.0'}
     dev: false
 

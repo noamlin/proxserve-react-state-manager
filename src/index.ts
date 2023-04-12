@@ -83,7 +83,7 @@ export default class PRSM <TargetType extends object>{
                 });
             });
 
-            return function cleanup() {
+            return () => { // cleanup on unmount
                 this.proxy.removeListener({ id: randomId })
             }
         }, []);

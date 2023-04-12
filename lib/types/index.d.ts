@@ -1,5 +1,5 @@
 import type { ProxserveInstance } from 'proxserve';
-type initOptions = {
+declare type initOptions = {
     trace: 'none' | 'normal' | 'verbose';
 };
 declare enum STATUS {

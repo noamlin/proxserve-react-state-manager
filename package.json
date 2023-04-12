@@ -11,7 +11,7 @@
 		"build": "rollup -c"
 	},
 	"dependencies": {
-		"proxserve": "2.2.0-beta.1"
+		"proxserve": "^2.2.0"
 	},
 	"devDependencies": {
 		"@rollup/plugin-typescript": "^11.1.0",
