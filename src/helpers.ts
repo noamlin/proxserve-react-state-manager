@@ -17,6 +17,9 @@ export function validateParsePaths(pathsFunctionOutput: any): string[] {
     outputs.forEach((output) => {
         if (validateIsPathGeneratorObject(output)) {
             parsed.push(output.__$propertyPath);
+        } else if (typeof output === 'string') {
+            // in case someone entered a `pathsFunction` that returns string(s) explicitly
+            parsed.push(output);
         }
     });
 
@@ -41,4 +44,17 @@ export function makePathGeneratorProxy(path: string = '') {
     }) as PathGeneratorProxy;
 
     return proxy;
+}
+
+export function invokePathsFunction(
+    pathsFunction?: (obj: any) => any,
+    path?: string,
+): string[] {
+    let paths2observe: string[] = [];
+    if (typeof pathsFunction === 'function') {
+        const pathGeneratorObject = makePathGeneratorProxy(path);
+        const outputs = pathsFunction(pathGeneratorObject);
+        paths2observe = validateParsePaths(outputs);
+    }
+    return paths2observe;
 }

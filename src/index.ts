@@ -1,19 +1,15 @@
 import { Proxserve } from 'proxserve';
 import type { ProxserveInstance } from 'proxserve';
 import { useEffect, useReducer } from 'react';
-import { validateParsePaths, quickUidGenerate, makePathGeneratorProxy } from './helpers';
+import {
+    validateParsePaths, quickUidGenerate,
+    makePathGeneratorProxy, invokePathsFunction,
+} from './helpers';
+import { unboundCreateSelector } from './create-selector';
+import { STATUS } from './constants';
+import type { InitOptions, UseGetOptions, PRSMClassType} from './types';
 
-type initOptions = {
-    trace: 'none' | 'normal' | 'verbose';
-};
-
-enum STATUS {
-    uninitialized,
-    active,
-    destroyed,
-}
-
-export default class PRSM <TargetType extends object>{
+export default class PRSM <TargetType> implements PRSMClassType<TargetType> {
     name: string;
 
     status: STATUS;
@@ -27,10 +23,10 @@ export default class PRSM <TargetType extends object>{
         this.status = STATUS.uninitialized;
         // initialize as a fallback
         this.target = {} as TargetType;
-        this.proxy = Proxserve.make<TargetType>(this.target, {name});
+        this.proxy = Proxserve.make<TargetType>(this.target as object, {name});
     }
 
-    init(obj: TargetType, options?: initOptions): void {
+    init(obj: TargetType, options?: InitOptions): void {
         if (typeof obj === 'object' && obj !== null) { // whether it's an object or array
             this.destroy();
             this.target = obj;
@@ -52,21 +48,16 @@ export default class PRSM <TargetType extends object>{
     }
 
     useGet(
-        pathsFunction?: (obj: TargetType) => any | any[],
-        options: { deep: boolean } = { deep: false },
+        pathsFunction?: (obj: TargetType) => any,
+        options: UseGetOptions = { deep: false },
     ): ProxserveInstance & TargetType {
         // https://reactjs.org/docs/hooks-faq.html#is-there-something-like-forceupdate
         const [, forceUpdate] = useReducer(x => x + 1, 0);
 
-        let paths2observe: string[] | undefined;
-        if (typeof pathsFunction === 'function') {
-            const pathGeneratorObject = makePathGeneratorProxy();
-            const outputs = pathsFunction(pathGeneratorObject as TargetType);
-            paths2observe = validateParsePaths(outputs);
-        }
+        const paths2observe = invokePathsFunction(pathsFunction);
 
         useEffect(() => {
-            if (!paths2observe || paths2observe.length === 0 || this.status === STATUS.destroyed) {
+            if (paths2observe.length === 0 || this.status === STATUS.destroyed) {
                 return;
             }
 
@@ -89,6 +80,14 @@ export default class PRSM <TargetType extends object>{
         }, []);
 
         return this.proxy;
+    }
+
+    createSelector<TSelected = unknown>(pathFunction: (obj: TargetType) => TSelected) {
+        const createSelector = unboundCreateSelector.bind({
+            instance: this,
+            path: '',
+        });
+        return createSelector<TargetType, TSelected>(pathFunction);
     }
 
     destroy(): void {

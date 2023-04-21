@@ -7,7 +7,7 @@ import { Card } from '../components/card/card';
 
 export const MiddleSection = () => {
 	console.log('rendering "MiddleSection"');
-	const content = contentStore.useGet((obj) => obj.middleSection.title);
+	const content = contentStore.useGet();
 
 	return (
 		<div className="middle-section">

@@ -21,7 +21,7 @@ type Content = {
     };
 };
 
-const contentStore = new PRSM<Content>('content');
+export const contentStore = new PRSM<Content>('content');
 
 contentStore.init({
     topSection: {
@@ -43,4 +43,6 @@ contentStore.init({
     },
 }, {trace: 'none'});
 
-export { contentStore };
+export const MSSelector = contentStore.createSelector((state) => state.middleSection);
+export const MSCardSelector = contentStore.createSelector((state) => state.middleSection.card);
+export const inputTextSelector = contentStore.createSelector((state) => state.topSection.inputText);
