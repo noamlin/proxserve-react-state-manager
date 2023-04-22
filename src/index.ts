@@ -1,10 +1,7 @@
 import { Proxserve } from 'proxserve';
 import type { ProxserveInstance } from 'proxserve';
 import { useEffect, useReducer } from 'react';
-import {
-    validateParsePaths, quickUidGenerate,
-    makePathGeneratorProxy, invokePathsFunction,
-} from './helpers';
+import { quickUidGenerate, invokePathsFunction } from './helpers';
 import { unboundCreateSelector } from './create-selector';
 import { STATUS } from './constants';
 import type { InitOptions, UseGetOptions, PRSMClassType} from './types';
@@ -26,10 +23,10 @@ export default class PRSM <TargetType> implements PRSMClassType<TargetType> {
         this.proxy = Proxserve.make<TargetType>(this.target as object, {name});
     }
 
-    init(obj: TargetType, options?: InitOptions): void {
-        if (typeof obj === 'object' && obj !== null) { // whether it's an object or array
+    init(state: TargetType, options?: InitOptions): void {
+        if (typeof state === 'object' && state !== null) { // whether it's an object or array
             this.destroy();
-            this.target = obj;
+            this.target = state;
             this.proxy = Proxserve.make<TargetType>(
                 this.target as object,
                 {
@@ -48,7 +45,7 @@ export default class PRSM <TargetType> implements PRSMClassType<TargetType> {
     }
 
     useGet(
-        pathsFunction?: (obj: TargetType) => any,
+        pathsFunction?: (state: TargetType) => any,
         options: UseGetOptions = { deep: false },
     ): ProxserveInstance & TargetType {
         // https://reactjs.org/docs/hooks-faq.html#is-there-something-like-forceupdate
@@ -82,12 +79,12 @@ export default class PRSM <TargetType> implements PRSMClassType<TargetType> {
         return this.proxy;
     }
 
-    createSelector<TSelected = unknown>(pathFunction: (obj: TargetType) => TSelected) {
-        const createSelector = unboundCreateSelector.bind({
+    createSelector<TSelected = unknown>(pathFunction: (state: TargetType) => TSelected) {
+        const createSelectorFunc = unboundCreateSelector.bind({
             instance: this,
             path: '',
         });
-        return createSelector<TargetType, TSelected>(pathFunction);
+        return createSelectorFunc<TargetType, TSelected>(pathFunction);
     }
 
     destroy(): void {

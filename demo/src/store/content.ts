@@ -44,5 +44,9 @@ contentStore.init({
 }, {trace: 'none'});
 
 export const MSSelector = contentStore.createSelector((state) => state.middleSection);
-export const MSCardSelector = contentStore.createSelector((state) => state.middleSection.card);
-export const inputTextSelector = contentStore.createSelector((state) => state.topSection.inputText);
+export const MSTitleSelector = MSSelector.createSelector((state) => state.title);
+export const MSCardSelector = MSSelector.createSelector((state) => state.card);
+export const MSCardTitleSelector = MSCardSelector.createSelector((state) => state.title);
+
+export const TSSelector = contentStore.createSelector((state) => state.topSection);
+export const inputTextSelector = TSSelector.createSelector((state) => state.inputText);

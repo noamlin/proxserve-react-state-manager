@@ -7,11 +7,11 @@ type CSThis<T> = {
     path: string;
 };
 
-export function unboundCreateSelector<TargetType, TSelected>(
-    pathFunction: (obj: TargetType) => any, // notice we are expecting to get a functions that returns only one path
+export function unboundCreateSelector<TargetType, TSelected = unknown>(
+    pathFunction: (obj: TargetType) => TSelected, // NOTE: we are expecting to get a function that returns only one path
 ) {
     const self = this as CSThis<TargetType>;
-    // `self.path` is the accumulating path. acts as a prefix path.
+    // `self.path` is the accumulating path. it will act as a prefix path.
     const paths2observe = invokePathsFunction(pathFunction, self.path);
     const parsedPath = paths2observe[0]; // the "final" path the user meant to get to
 
@@ -24,17 +24,17 @@ export function unboundCreateSelector<TargetType, TSelected>(
         } catch (err) {
             // console.error(err);
         }
-        // NOTE: wrong path will lead to returning undefined, even though typescript is thinks otherwise
+        // NOTE: wrong path will lead to returning undefined, even though typescript will think otherwise
         return evaluatedValue;
     }
 
     function useGet(
-        pathsFunction?: (obj: TSelected) => any,
+        pathsFunction?: (state: TSelected) => any,
         options?: UseGetOptions,
     ): TSelected {
         const paths2observe = invokePathsFunction(pathsFunction, parsedPath);
         if (paths2observe.length > 0) {
-            // just listens to the right path
+            // this `instance.useGet` just listens to the correct path. its return is not useful.
             self.instance.useGet(() => paths2observe[0], options) as TSelected;
         }
 
@@ -44,6 +44,12 @@ export function unboundCreateSelector<TargetType, TSelected>(
     return {
         get,
         useGet,
-        // createSelector: unboundCreateSelector,
+        createSelector: function createSelector<TSelectedInner = unknown>(pathFunction: (obj: TSelected) => TSelectedInner) {
+            const createSelectorFunc = unboundCreateSelector.bind({
+                instance: self.instance,
+                path: parsedPath,
+            });
+            return createSelectorFunc<TSelected, TSelectedInner>(pathFunction);
+        },
     };
 }

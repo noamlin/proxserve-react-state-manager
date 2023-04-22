@@ -1,5 +1,5 @@
 import React from 'react';
-import { contentStore } from '../store/content';
+import { inputTextSelector, MSTitleSelector } from '../store/content';
 
 import { BlueText } from '../components/blueText/blueText';
 import { InputText } from '../components/inputText/inputText';
@@ -7,11 +7,12 @@ import { Card } from '../components/card/card';
 
 export const MiddleSection = () => {
 	console.log('rendering "MiddleSection"');
-	const content = contentStore.useGet();
+	const title = MSTitleSelector.useGet();
+	const inputText = inputTextSelector.useGet();
 
 	return (
 		<div className="middle-section">
-			<h1>{content.middleSection.title}</h1>
+			<h1>{title}</h1>
 			<BlueText />
 			<br/><br/>
 			<InputText parentName="MiddleSection" />
@@ -20,7 +21,7 @@ export const MiddleSection = () => {
 			<br/><br/>
 			Initialized input but not watching for changes:
 			{' '}
-			<input value={content.topSection.inputText} disabled />
+			<input value={inputText} disabled />
 		</div>
 	);
 };

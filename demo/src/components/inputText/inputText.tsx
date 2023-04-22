@@ -1,14 +1,15 @@
 import React, { ChangeEventHandler, useCallback } from 'react';
-import { contentStore } from '../../store/content';
+import { TSSelector, inputTextSelector } from '../../store/content';
 import './inputText.scss';
 
 // input as another component so it will only trigger its own re-render
 export const InputText = ({ parentName }: { parentName: string }) => {
 	console.log(`rendering "${parentName} -> InputText"`);
-	const content = contentStore.useGet((obj) => obj.topSection.inputText);
+    const topSection = TSSelector.useGet();
+	const inputText = inputTextSelector.useGet((state) => state);
 
 	const onChange: ChangeEventHandler<HTMLInputElement> = useCallback((event) => {
-		content.topSection.inputText = event.target.value;
+		topSection.inputText = event.target.value;
 	}, []);
 
     const onClick = useCallback(() => {
@@ -21,7 +22,7 @@ export const InputText = ({ parentName }: { parentName: string }) => {
 
 	return (
         <>
-            <input value={content.topSection.inputText} onChange={onChange} />
+            <input value={inputText} onChange={onChange} />
             {' '}
             <button className="input-i-button" onClick={onClick}>i</button>
         </>
